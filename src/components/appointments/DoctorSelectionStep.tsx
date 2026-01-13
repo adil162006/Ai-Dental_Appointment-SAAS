@@ -42,13 +42,7 @@ function DoctorSelectionStep({
           >
             <CardHeader className="pb-4">
               <div className="flex items-start gap-4">
-                <Image
-                  src={dentist.imageUrl!}
-                  alt={dentist.name}
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 rounded-full object-cover"
-                />
+               
                 <div className="flex-1">
                   <CardTitle className="text-lg">{dentist.name}</CardTitle>
                   <CardDescription className="text-primary font-medium">
