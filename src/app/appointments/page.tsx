@@ -54,7 +54,27 @@ function AppointmentsPage() {
           // store the appointment details to show in the modal
           setBookedAppointment(appointment);
 
-         
+          try {
+            const emailResponse = await fetch("/api/send-appointment-email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userEmail: appointment.patientEmail,
+                doctorName: appointment.doctorName,
+                appointmentDate: format(new Date(appointment.date), "EEEE, MMMM d, yyyy"),
+                appointmentTime: appointment.time,
+                appointmentType: appointmentType?.name,
+                duration: appointmentType?.duration,
+                price: appointmentType?.price,
+              }),
+            });
+
+            if (!emailResponse.ok) console.error("Failed to send confirmation email");
+          } catch (error) {
+            console.error("Error sending confirmation email:", error);
+          }
 
           // show the success modal
           setShowConfirmationModal(true);
@@ -141,13 +161,7 @@ function AppointmentsPage() {
             {userAppointments.map((appointment) => (
               <div key={appointment.id} className="bg-card border rounded-lg p-4 shadow-sm">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="size-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <img
-                      src={appointment.doctorImageUrl}
-                      alt={appointment.doctorName}
-                      className="size-10 rounded-full"
-                    />
-                  </div>
+                  
                   <div>
                     <p className="font-medium text-sm">{appointment.doctorName}</p>
                     <p className="text-muted-foreground text-xs">{appointment.reason}</p>
